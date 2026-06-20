@@ -1,3 +1,8 @@
+# ==========================================
+# PROJECT 2: DATA CLASSIFICATION USING AI
+# DecodeLabs AI Internship
+# ==========================================
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -14,32 +19,79 @@ from sklearn.metrics import (
     f1_score
 )
 
+# ==========================================
+# STEP 1: LOAD DATASET
+# ==========================================
+
 iris = load_iris()
 
 X = iris.data
 y = iris.target
 
-print("Dataset Shape:", X.shape)
-print("Target Shape:", y.shape)
+print("=" * 50)
+print("IRIS DATASET INFORMATION")
+print("=" * 50)
+
+print("Dataset Shape :", X.shape)
+print("Target Shape  :", y.shape)
+
+df = pd.DataFrame(
+    X,
+    columns=iris.feature_names
+)
+
+df["Species"] = y
+
+print("\nFirst 5 Records:")
+print(df.head())
+
+# ==========================================
+# STEP 2: TRAIN TEST SPLIT
+# ==========================================
 
 X_train, X_test, y_train, y_test = train_test_split(
     X,
     y,
-    test_size=0.2,
+    test_size=0.20,
     random_state=42,
     shuffle=True
 )
+
+print("\nTraining Samples :", len(X_train))
+print("Testing Samples  :", len(X_test))
+
+# ==========================================
+# STEP 3: FEATURE SCALING
+# ==========================================
 
 scaler = StandardScaler()
 
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
+
+print("\nFeature Scaling Completed")
+
+# ==========================================
+# STEP 4: BUILD KNN MODEL
+# ==========================================
+
 model = KNeighborsClassifier(
     n_neighbors=5
 )
 
 model.fit(X_train, y_train)
+
+print("\nModel Training Completed")
+
+# ==========================================
+# STEP 5: PREDICTIONS
+# ==========================================
+
 y_pred = model.predict(X_test)
+
+# ==========================================
+# STEP 6: EVALUATION
+# ==========================================
 
 accuracy = accuracy_score(
     y_test,
@@ -52,8 +104,12 @@ f1 = f1_score(
     average="weighted"
 )
 
-print("\nAccuracy:", accuracy)
-print("F1 Score:", f1)
+print("\n" + "=" * 50)
+print("MODEL PERFORMANCE")
+print("=" * 50)
+
+print(f"Accuracy Score : {accuracy:.4f}")
+print(f"F1 Score       : {f1:.4f}")
 
 print("\nClassification Report")
 print(
@@ -64,12 +120,19 @@ print(
     )
 )
 
+# ==========================================
+# STEP 7: CONFUSION MATRIX
+# ==========================================
+
 cm = confusion_matrix(
     y_test,
     y_pred
 )
 
-plt.figure(figsize=(8,6))
+print("\nConfusion Matrix")
+print(cm)
+
+plt.figure(figsize=(8, 6))
 
 sns.heatmap(
     cm,
@@ -80,7 +143,29 @@ sns.heatmap(
     yticklabels=iris.target_names
 )
 
-plt.title("Confusion Matrix")
-plt.xlabel("Predicted")
-plt.ylabel("Actual")
+plt.title("Confusion Matrix - Iris Classification")
+plt.xlabel("Predicted Label")
+plt.ylabel("Actual Label")
+
+plt.tight_layout()
+
+# Save Image
+plt.savefig("confusion_matrix.png")
+
 plt.show()
+
+print("\nConfusion Matrix saved as 'confusion_matrix.png'")
+
+# ==========================================
+# STEP 8: SAMPLE PREDICTIONS
+# ==========================================
+
+print("\nSample Predictions")
+
+for i in range(5):
+    print(
+        f"Actual: {iris.target_names[y_test[i]]} | "
+        f"Predicted: {iris.target_names[y_pred[i]]}"
+    )
+
+print("\nProject Completed Successfully")
