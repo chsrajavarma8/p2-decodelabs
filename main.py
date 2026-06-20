@@ -1,7 +1,3 @@
-# ==========================================
-# PROJECT 2: DATA CLASSIFICATION USING AI
-# DecodeLabs AI Internship
-# ==========================================
 
 import pandas as pd
 import numpy as np
@@ -18,10 +14,6 @@ from sklearn.metrics import (
     classification_report,
     f1_score
 )
-
-# ==========================================
-# STEP 1: LOAD DATASET
-# ==========================================
 
 iris = load_iris()
 
@@ -45,9 +37,6 @@ df["Species"] = y
 print("\nFirst 5 Records:")
 print(df.head())
 
-# ==========================================
-# STEP 2: TRAIN TEST SPLIT
-# ==========================================
 
 X_train, X_test, y_train, y_test = train_test_split(
     X,
@@ -60,9 +49,6 @@ X_train, X_test, y_train, y_test = train_test_split(
 print("\nTraining Samples :", len(X_train))
 print("Testing Samples  :", len(X_test))
 
-# ==========================================
-# STEP 3: FEATURE SCALING
-# ==========================================
 
 scaler = StandardScaler()
 
@@ -71,9 +57,6 @@ X_test = scaler.transform(X_test)
 
 print("\nFeature Scaling Completed")
 
-# ==========================================
-# STEP 4: BUILD KNN MODEL
-# ==========================================
 
 model = KNeighborsClassifier(
     n_neighbors=5
@@ -83,15 +66,9 @@ model.fit(X_train, y_train)
 
 print("\nModel Training Completed")
 
-# ==========================================
-# STEP 5: PREDICTIONS
-# ==========================================
 
 y_pred = model.predict(X_test)
 
-# ==========================================
-# STEP 6: EVALUATION
-# ==========================================
 
 accuracy = accuracy_score(
     y_test,
@@ -120,10 +97,6 @@ print(
     )
 )
 
-# ==========================================
-# STEP 7: CONFUSION MATRIX
-# ==========================================
-
 cm = confusion_matrix(
     y_test,
     y_pred
@@ -149,16 +122,12 @@ plt.ylabel("Actual Label")
 
 plt.tight_layout()
 
-# Save Image
 plt.savefig("confusion_matrix.png")
 
 plt.show()
 
 print("\nConfusion Matrix saved as 'confusion_matrix.png'")
 
-# ==========================================
-# STEP 8: SAMPLE PREDICTIONS
-# ==========================================
 
 print("\nSample Predictions")
 
